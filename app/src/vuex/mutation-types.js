@@ -1,0 +1,3 @@
+export const SAVE_SERVER = 'SAVE_SERVER'
+
+export const ADD_TERMINAL_LINE = 'ADD_TERMINAL_LINE'
