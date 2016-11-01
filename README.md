@@ -4,7 +4,7 @@
 
 ## License note
 
-> Note: This software will be open source, but might be released / sold on the App store. Therefore there is currently no license attached and you may not use the code. This might change when I get the time to figure out how I want to license open source software which is also helping me to buy food :)
+> Note: This software is open source, but might be released / sold on the App store. Therefore there is currently no license attached and you may not use the code. This might change when I get the time to figure out how I want to license open source software which is also helping me to buy food :)
 
 ## Build Setup
 
