@@ -5,6 +5,9 @@
     font-family: monospace;
     min-height: 200px;
     padding: 10px;
+    border-top: 4px solid #020a0c;
+    box-shadow: 0 -2px 15px 0px rgba(0,0,0,0.5);
+    position: relative;
   }
 
   .lines-wrapper {

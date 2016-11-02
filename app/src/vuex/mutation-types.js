@@ -1,3 +1,7 @@
 export const SAVE_SERVER = 'SAVE_SERVER'
 
 export const ADD_TERMINAL_LINE = 'ADD_TERMINAL_LINE'
+
+export const ADD_TASK = 'ADD_TASK'
+export const SET_TASK_NAME = 'SET_TASK_NAME'
+export const UPDATE_TASK_COMMANDS = 'UPDATE_TASK_COMMANDS'

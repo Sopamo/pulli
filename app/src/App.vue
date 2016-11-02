@@ -41,6 +41,10 @@ body {
   border-bottom: 1px solid #858585;
   box-shadow: 0 2px 4px 0px rgba(0, 0, 0, 0.2);
 
+  .btn {
+    float: right;
+  }
+
   h1 {
     margin: 0;
     font-size: 18px;
@@ -67,6 +71,7 @@ body {
 
 .title-bar-wrapper {
   padding-top: 50px;
+  height: 100%;
 }
 
 </style>

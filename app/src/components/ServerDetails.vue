@@ -1,73 +1,82 @@
 <style lang="scss">
-.command {
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid #EAEAEA;
-  background: linear-gradient(to bottom, #fefefe 0%,#f6f6f8 100%);
-  padding: 5px 0;
-
-  .command-action {
-    width: 40px;
-    font-size: 30px;
-    line-height: 45px;
-    padding-left: 10px;
-  }
-
-  &-description {
+  .details-wrapper {
+    height: 100%;
     display: flex;
     flex-direction: column;
+  }
+  .tasks-list {
     flex: 1;
+    overflow-y: scroll;
   }
-
-  &-title {
-    font-weight: bold;
-  }
-
-  &-meta {
-  }
-}
 </style>
 
 <template>
 <div class="title-bar-wrapper">
   <div class="title-bar">
-    <h1 @click="selfTest"><state-indicator :server="server"></state-indicator>{{ server.name }} <span class="subtitle">{{ server.username }}@{{ server.ip }}</span></h1>
+    <h1>
+      <span @click="selfTest">
+        <state-indicator :server="server"></state-indicator>
+        {{ server.name }}
+        <span class="subtitle">{{ server.username }}@{{ server.ip }}</span>
+      </span>
+      <button class="btn btn-default" @click="addTask">
+        <span class="icon icon-plus icon-text"></span>
+        Neuer Task
+      </button>
+    </h1>
   </div>
-  <div class="commands-list">
-    <div v-for="i in [1,2,3]" class="command">
-      <div class="command-action"><span class="icon icon-play"></span></div>
-      <div class="command-description">
-        <div class="command-title">Sopamo.de deploy</div>
-        <div class="command-meta">5 mins ago</div>
-      </div>
+  <div class="details-wrapper">
+    <div class="tasks-list">
+      <task-line :task="task" v-for="task in serverTasks"></task-line>
     </div>
+    <terminal :server="server"></terminal>
   </div>
-  <terminal style="position: absolute;bottom: 0;left: 0;right:0" :server="server"></terminal>
 </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapMutations } from 'vuex'
+  import * as types from '../vuex/mutation-types'
   import StateIndicator from './partials/StateIndicator'
+  import TaskLine from './partials/TaskLine'
+  import Task from '../models/Task'
   import Terminal from './partials/Terminal'
 
   export default {
     computed: {
       ...mapGetters([
-        'servers'
+        'servers',
+        'tasks'
       ]),
       server() {
         return this.servers[this.$route.params.index]
+      },
+      serverTasks() {
+        let tasks = this.tasks[this.server.id]
+        if (typeof tasks === 'undefined' || !tasks) {
+          return []
+        }
+        return tasks.map(task => new Task(task))
       }
     },
     methods: {
+      ...mapMutations({
+        commitAddTask: types.ADD_TASK
+      }),
       selfTest() {
         this.server.selfTest()
+      },
+      addTask() {
+        this.commitAddTask({
+          name: null,
+          serverId: this.server.id
+        })
       }
     },
     components: {
       StateIndicator,
-      Terminal
+      Terminal,
+      TaskLine
     }
   }
 </script>
