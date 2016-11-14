@@ -41,6 +41,9 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+  
+  /** Create the top menu */
+  require('./src/menu')
 
   console.log('mainWindow opened')
 }
