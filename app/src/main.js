@@ -9,6 +9,9 @@ Vue.use(Electron)
 Vue.use(Router)
 Vue.config.debug = true
 
+// Initialize ipc
+require('./ipc')
+
 const router = new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes

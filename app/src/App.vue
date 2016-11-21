@@ -4,6 +4,13 @@
   padding: 0;
 }
 
+input {
+  -webkit-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
+}
+
 html,
 body {
   height: 100%;

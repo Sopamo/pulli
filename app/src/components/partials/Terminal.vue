@@ -3,11 +3,10 @@
     background: #032833;
     color: #849496;
     font-family: monospace;
-    min-height: 200px;
     padding: 10px;
-    border-top: 4px solid #020a0c;
     box-shadow: 0 -2px 15px 0px rgba(0,0,0,0.5);
     position: relative;
+    height: 100px;
   }
 
   .lines-wrapper {
@@ -70,10 +69,22 @@
     display: block;
   }
 
+  .grabber {
+    height: 5px;
+    background: #020a0c;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: height .1s ease-out;
+    cursor: ns-resize;
+  }
+
 </style>
 
 <template>
-  <div class="terminal" ref="terminal">
+  <div class="terminal" ref="terminal" :style="terminalStyle">
+    <div class="grabber" ref="grabber"></div>
     <div class="lines-wrapper" ref="linesWrapper">
       <div v-if="terminal" v-for="line in terminal.lines" class="line" :class="{'type-input': line.type == 'input'}"><span class="icon icon-right-open" v-if="line.type == 'input'"></span><span v-html="nl2br(line.content)"></span></div>
     </div>
@@ -93,7 +104,11 @@
     data() {
       return {
         input: null,
-        currentlyDragging: 0
+        currentlyDragging: 0,
+        currentlyResizing: 0,
+        terminalStyle: {
+          height: '200px'
+        }
       }
     },
     created() {
@@ -122,6 +137,24 @@
 
         // Scroll the terminal to the bottom
         this.$refs.linesWrapper.scrollTop = this.$refs.linesWrapper.scrollHeight
+
+        /** Height change */
+        this.$refs.grabber.addEventListener('mousedown', () => {
+          this.currentlyResizing = 1
+        })
+
+        // When the mouse is moved and has been clicked before we are selecting text
+        // TODO: Fix the memory leak ;)
+        document.body.addEventListener('mousemove', (e) => {
+          if (this.currentlyResizing === 1) {
+            this.terminalStyle.height = Math.max(50, parseInt(this.terminalStyle.height) - e.movementY) + 'px'
+          }
+        })
+
+        // Trigger the focus event only when we are not currently selecting text
+        document.body.addEventListener('mouseup', () => {
+          this.currentlyResizing = 0
+        })
       })
     },
     computed: {

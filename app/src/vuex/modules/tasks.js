@@ -19,6 +19,7 @@ const mutations = {
     task.createdAt = Date.now()
     task.name = name
     task.commands = null
+    task.type = 'ssh'
     state.tasks[serverId].unshift(task)
     persist.set(state)
   },
@@ -30,6 +31,21 @@ const mutations = {
   [types.UPDATE_TASK_COMMANDS] (state, {task, commands}) {
     let stateTask = state.tasks[task.serverId].find(t => t.id === task.id)
     stateTask.commands = commands
+    persist.set(state)
+  },
+  [types.UPDATE_TASK_COMMAND_OPTION] (state, {task, option, value}) {
+    let stateTask = state.tasks[task.serverId].find(t => t.id === task.id)
+    stateTask.commands[option] = value
+    persist.set(state)
+  },
+  [types.UPDATE_TASK_TYPE] (state, {task, type}) {
+    let stateTask = state.tasks[task.serverId].find(t => t.id === task.id)
+    stateTask.type = type
+    if (type === 'rsync') {
+      stateTask.commands = {
+        flags: 'ra' // Default flags are recursive and keep rights
+      }
+    }
     persist.set(state)
   }
 }
